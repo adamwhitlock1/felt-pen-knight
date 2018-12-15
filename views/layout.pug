@@ -1,0 +1,29 @@
+include mixins.pug
+
+html
+	head
+		if title
+			title= title
+		else
+			title= 'Felt Pen Knight'
+		link(rel='stylesheet', href='static/reset.css')
+		link(rel='stylesheet', href='static/style.css')
+	body
+		
+		header
+			div.content
+				div.title
+					a(href='/')
+						h1.title__main Felt Pen Knight
+						h2.title__sub a collaborative adventure
+				
+				nav.nav-menu
+					a.nav-menu__item(href='/login') LOGIN
+					a.nav-menu__item(href='/register') REGISTER
+					a.nav-menu__item(href='/hidden') hidden
+					a.nav-menu__item(href='/logout') LOGOUT
+					a.nav-menu__item(href='/post') post
+
+		div.content
+			block content
+			
