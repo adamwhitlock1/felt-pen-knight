@@ -8,10 +8,6 @@ router.get('/logout', function(req, res) {
 	res.redirect('/');
 });
 
-router.get('/post', function(req, res) {
-	res.render('post',  {user: req.user});
-});
-
 router.get('/login', function(req, res) {
 	res.render('login',  {user: req.user});
 });
