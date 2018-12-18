@@ -2,7 +2,7 @@ const Frame  = require('../models/frame.model');
 const shortid = require('shortid');
 const imageSize = require('image-size');
 
-exports.getThread = (req, res, next) => {
+exports.getFrame = (req, res, next) => {
 	console.log(req.params);
 };
 

@@ -11,7 +11,6 @@ const UserSchema = new Schema({
 });
 
 UserSchema.methods.validatePassword = function(password) {
-	//TODO: is there a way to make this async?
 	return bcrypt.compareSync(password, this.password);
 };
 

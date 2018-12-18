@@ -4,7 +4,6 @@ html, body{
 
 .content{
 	width: 640px;
-	height: 200px;
 	margin: auto;
 }
 
@@ -16,6 +15,11 @@ header{
 	background-color: red;
 	color: white;
 }
+
+header > div.content{
+	height: 200px;
+}
+
 /* UTIL */
 .center{
 	text-align: center;

@@ -1,6 +1,11 @@
 extends layout.pug
 
+include mixins.pug
+
 block content
 	div.content
 		h1 #{profile.name}
 		h2 Since #{profile.join_date}
+	each frame in frames
+		+renderFrame(frame)
+		

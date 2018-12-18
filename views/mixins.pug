@@ -1,0 +1,8 @@
+mixin renderFrame(frame)
+	div.frame.content
+		a(href = '/frames/' + frame.id)
+			img.frame__info(src = '/static/images/' + frame.url)
+		p.frame__info
+			a.frame__info__user(href = '/users/' + frame.user.id) #{frame.user.name}
+			i  | #{frame.created} | 
+			b Children: #{frame.children.length} 

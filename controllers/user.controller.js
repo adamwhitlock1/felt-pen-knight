@@ -1,4 +1,7 @@
+const settings = require('../settings.js');
+
 const User = require('../models/user.model');
+const Frame = require('../models/frame.model');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 
@@ -72,14 +75,37 @@ exports.register = async function(req, res, next) {
 };
 
 /*
- * Gets a users details.
+ * Displays a users profile.
  */
-exports.details = function(req, res, next) {
-	User.findById(req.params.id, (err, user) => {
-		if(err){
-			return next(err);
+exports.details = async function(req, res, next) {
+
+	if(!req.params.id){
+		next('need a valid user id!');
+	}
+
+	try {
+
+		//get the user info
+		let profile = await User.findById(req.params.id).exec();
+
+		//pagination options
+		let page = req.params.page;
+		if(!page || page.isNan()){
+			page = 1;
 		}
-		res.render('userprofile', {user: req.user, profile: user});
-	});
+		//avoid negative numbers
+		page = Math.max(1, page);
+
+		let pageOpts = {
+			page: page,
+			limit: settings.postsPerPage
+		};
+		let frames = await Frame.paginate({'user.id': profile.id}, pageOpts);
+
+		res.render('userprofile', {user: req.user, profile: profile, frames: frames.docs});
+
+	} catch (e) {
+		next(e);
+	}
 
 };
