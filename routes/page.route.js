@@ -19,14 +19,6 @@ router.get('/register', function(req, res) {
 	res.render('register',  {user: req.user});
 });
 
-router.get('/hidden', function(req, res) {
-	if(req.isAuthenticated()){
-		res.render('hidden', {user: req.user});
-	} else {
-		res.send('no!');
-	}
-});
-
 
 
 module.exports = router;
