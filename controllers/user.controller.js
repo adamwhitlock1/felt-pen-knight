@@ -77,7 +77,7 @@ exports.register = function(req, res, next) {
 				});
 
 				//TODO: redirect to homepage
-				res.send(`New user ${name} created!`);
+				res.redirect('/');
 			});
 		});
 	}).limit(1);
@@ -86,6 +86,12 @@ exports.register = function(req, res, next) {
 /*
  * Gets a users details.
  */
-exports.details = function(req, res) {
-	res.send('//TODO:');
+exports.details = function(req, res, next) {
+	User.findById(req.params.id, (err, user) => {
+		if(err){
+			return next(err);
+		}
+		res.render('userprofile', {user: req.user, profile: user});
+	});
+
 };

@@ -2,36 +2,49 @@ const Frame  = require('../models/frame.model');
 const shortid = require('shortid');
 const imageSize = require('image-size');
 
-exports.getThread = function(req, res) {
-	//TODO
+exports.getThread = (req, res, next) => {
+	console.log(req.params);
 };
 
 
-function GetUniqueFileName() {
-
-}
-
-exports.postFrame = function(req, res) {
+exports.postFrame = (req, res, next) => {
 	if(!req.isAuthenticated()) {
-		return res.send('you must log in!');
+		return next('you must log in!');
 	}
 	if(Object.keys(req.files).length == 0) {
-		return res.send('no files :(');
+		return next('no files :(');
 	}
 
 	let size = imageSize(req.files.image.data);
 	if(size.width != 640 || size.height != 480){
-		return res.send('image must be exactly 640x480');
+		return next('image must be exactly 640x480');
 	}
-	console.log(size);
 
 	let image = req.files.image;
-	let extension = req.files.image.name.split('.').pop();
+	let extension = image.name.split('.').pop();
 	let url = req.user.name + shortid.generate() + '.' + extension;
-	image.mv('./static/images/' + url, function(err) {
-		if(err) {
-			return res.send(err);
+
+	let newFrame = new Frame({
+		url: url,
+		user: {id:req.user.id, name: req.user.name}
+	});
+
+	newFrame.save( (err) => {
+		if(err){
+			return next(err);
 		}
-		res.send('yeet!');
-	})
+		//save the image
+		image.mv('./static/images/' + url, function(err) {
+			if(err) {
+				return next(err);
+			}
+
+			res.redirect('/');
+
+		});
+
+	});
+
+
+
 };

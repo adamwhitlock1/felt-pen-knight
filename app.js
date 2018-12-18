@@ -10,6 +10,7 @@ const User = require('./models/user.model.js');
 const userRoutes = require('./routes/user.route');
 const frameRoutes = require('./routes/frame.route');
 const otherRoutes = require('./routes/other.route');
+const pageRoutes = require('./routes/page.route');
 const app = express();
 
 
@@ -35,6 +36,7 @@ app.use(passport.session());
 app.use('/users', userRoutes);
 app.use('/frames', frameRoutes);
 app.use('/static', otherRoutes);
+app.use(pageRoutes);
 
 
 passport.use(new LocalStrategy({
@@ -65,24 +67,6 @@ passport.deserializeUser(function(user, done) {
 	});
 });
 
-
-//TODO: put this in its own file.
-app.get('/logout', function(req, res) {
-	req.logout();
-	res.redirect('/');
-});
-app.get('/post', function(req, res) {
-	res.render('post');
-});
-app.get('/login', function(req, res) {
-	res.render('login');
-});
-app.get('/', function(req, res) {
-	res.render('login');
-});
-app.get('/register', function(req, res) {
-	res.render('register');
-});
 app.post('/login', passport.authenticate('local', {
 	successRedirect: '/hidden',
 	failureRedirect: '/login',

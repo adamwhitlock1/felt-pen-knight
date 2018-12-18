@@ -6,8 +6,8 @@ html
 			title= title
 		else
 			title= 'Felt Pen Knight'
-		link(rel='stylesheet', href='static/reset.css')
-		link(rel='stylesheet', href='static/style.css')
+		link(rel='stylesheet', href='/static/reset.css')
+		link(rel='stylesheet', href='/static/style.css')
 	body
 		
 		header
@@ -18,12 +18,16 @@ html
 						h2.title__sub a collaborative adventure
 				
 				nav.nav-menu
-					a.nav-menu__item(href='/login') LOGIN
-					a.nav-menu__item(href='/register') REGISTER
-					a.nav-menu__item(href='/hidden') hidden
-					a.nav-menu__item(href='/logout') LOGOUT
-					a.nav-menu__item(href='/post') post
+					if user
+						a.nav-menu__item(href='/users/' + user.id) #{user.name}
+						a.nav-menu__item(href='/logout') LOGOUT
+						a.nav-menu__item(href='/post') POST
+					else 
+						a.nav-menu__item(href='/login') LOGIN
+						a.nav-menu__item(href='/register') REGISTER
+						
+					a.nav-menu__item(href='/hidden') hidden(test)
+					
 
-		div.content
-			block content
+		block content
 			

@@ -1,7 +1,8 @@
 extends layout.pug
 
 block content
-		p Hello #{user}!
+	div.content
+		p Hello #{user.name}!
 		form(method='post', action='frames/new/null', enctype='multipart/form-data')
 			input(type='file', name='image')
 			input(type='submit')
