@@ -68,20 +68,10 @@ passport.deserializeUser(function(user, done) {
 });
 
 app.post('/login', passport.authenticate('local', {
-	successRedirect: '/hidden',
+	successRedirect: '/',
 	failureRedirect: '/login',
 })
 );
-
-app.get('/hidden', function(req, res) {
-	if(req.isAuthenticated()){
-		res.render('hidden', {user: req.user.name});
-	} else {
-		res.send('no!');
-	}
-});
-
-
 
 let port = 8080;
 app.listen(port, () => {

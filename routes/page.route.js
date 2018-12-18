@@ -36,12 +36,13 @@ router.get('/', async function(req, res, next) {
 			.exec();
 
 		return res.render('index', {
+			user: req.user,
 			recentFrames: recentFrames,
 			startFrame: startFrame
-		})
+		});
 
 	} catch (e) {
-		return next(err);
+		return next(e);
 	}
 
 });
