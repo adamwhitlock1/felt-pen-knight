@@ -6,6 +6,8 @@ block content
 	div.content
 		h1 Start from the beginning:
 		+renderFrame(startFrame)
+	
+		hr
+
 		h1 Most recent:
-		each recentFrame in recentFrames
-			+renderFrame(recentFrame)
+		+renderFramePreviews(recentFrames)

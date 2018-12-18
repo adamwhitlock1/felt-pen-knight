@@ -78,3 +78,19 @@ input{
 	display: block;
 	margin: auto;
 }
+
+/* FRAMES */
+
+div.preview__container{
+
+}
+
+div.frame__preview{
+	display: inline-block;
+
+}
+
+img.frame__preview__image{
+	width: 160px;
+	height: auto;
+}
