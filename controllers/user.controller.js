@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 /**
  * Registers a new user, and sends them a hello email.
  */
-exports.register = function(req, res, next) {
+exports.register = async function(req, res, next) {
 
 	let name = req.body.name;
 	let password = req.body.password;
@@ -28,59 +28,47 @@ exports.register = function(req, res, next) {
 		return next('User registration requires username, email, and password!');
 	}
 
-	User.find({ name: name }, '_id',  function(err, user){
-		if(err){
-			return next(err);
+
+	try {
+
+		//check that the user with given username does not already exist
+		let existing = await User.find({ name: name }).limit(1).exec();
+		if(existing.length != 0) {
+			return next('User already exists!');
 		}
 
-		//only add the user if they do not already exist
-		if(user.length !== 0) {
-			return next('user already exists!');
-		}
-
-
-		//create a new password
+		//create the password hash
 		const saltRounds = 10;
-		bcrypt.hash(password, saltRounds, function(err, hash){
+		let hash = await bcrypt.hash(password, saltRounds);
 
-			if(err){
-				return next(err);
-			}
-
-
-			//save the user
-			let newUser = new User({
-				name: name,
-				email: email,
-				password: hash
-			});
-
-			newUser.save((err) => {
-				if (err) {
-					return next(err);
-				}
-
-				//send them an email to say hello!
-				const mail = {
-					from: process.env.GMAIL_USER,
-					to: email,
-					subject: 'Welcome!',
-					html: '<p>Welcome to Felt Pen Knight!</p>'
-				};
-
-				transporter.sendMail(mail, function(err, info) {
-					if(err){
-						console.log(err);
-					} else {
-						console.log(info);
-					}
-				});
-
-				//TODO: redirect to homepage
-				res.redirect('/');
-			});
+		//create and save a new user
+		let newUser = new User({
+			name: name,
+			email: email,
+			password: hash
 		});
-	}).limit(1);
+
+		await newUser.save();
+
+		//send them an email to say hello!
+		const mail = {
+			from: process.env.GMAIL_USER,
+			to: email,
+			subject: 'Welcome!',
+			html: '<p>Welcome to Felt Pen Knight!</p>'
+		};
+
+		await transporter.sendMail(mail);
+
+		//all is well if we make it here, redirect to login page so they can log in.
+		return res.redirect('/login');
+
+
+	} catch (e) {
+		return next(e);
+	}
+
+
 };
 
 /*
