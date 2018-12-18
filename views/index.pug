@@ -3,11 +3,15 @@ extends layout.pug
 include mixins.pug 
 
 block content
-	div.content
+	div.content.box
+		p 
+			| Welcome! Felt Pen Knight is a collaborative,
+			| ongoing web-comic. Think of it like a comment thread
+			| with comic frames instead of text.
+	div.content.box
 		h1 Start from the beginning:
 		+renderFrame(startFrame)
-	
-		hr
 
+	div.content.box
 		h1 Most recent:
 		+renderFramePreviews(recentFrames)

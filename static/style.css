@@ -1,5 +1,6 @@
 html, body{
 	height: 100%;
+	background-color: rgb(255, 230, 230);
 }
 
 .content{
@@ -7,6 +8,18 @@ html, body{
 	margin: auto;
 }
 
+.box{
+	background-color: white;
+
+	padding: 1em;
+	margin: 1em auto;
+
+	border-radius: 15px;
+	box-shadow: 5px 5px;
+}
+
+
+/* HEADER */
 
 header{
 	position: relative;

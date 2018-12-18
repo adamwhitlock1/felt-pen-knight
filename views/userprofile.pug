@@ -3,9 +3,12 @@ extends layout.pug
 include mixins.pug
 
 block content
-	div.content
-		h1 #{profile.name}
+	div.content.box
+		h1 user: #{profile.name}
 		h2 Since #{profile.join_date}
-	each frame in frames
-		+renderFrame(frame)
+	div.content.box
+		each frame in frames
+			+renderFrame(frame)
+			
+	//-TODO: pagination
 		

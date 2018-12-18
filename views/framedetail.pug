@@ -3,23 +3,24 @@ extends layout.pug
 include mixins.pug
 
 block content
-	div.content
-		
-		if frame.parents
+	if frame.parents && frame.parents.length > 0
+		div.content.box
 			each parent in frame.parents
 				+renderFrame(parent)
+	div.content.box
 		a(id='current')
 			+renderFrame(frame)
-		hr
+
+	
+	div.content.box
 		//-TODO: canvas painter
 		p Canvas integration coming soon!
-
 		form(method='post', action='/frames/' + frame.id + '/new', enctype='multipart/form-data')
 			input(type='file', name='image')
 			input(type='submit')
 			p Image must be 640x480 EXACTLY
 		
-		hr
+	div.content.box
 		h1 Children:
 			
 		+renderFramePreviews(frame.children)
