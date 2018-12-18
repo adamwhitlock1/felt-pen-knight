@@ -98,9 +98,14 @@ exports.details = async function(req, res, next) {
 
 		let pageOpts = {
 			page: page,
-			limit: settings.postsPerPage
+			limit: settings.postsPerPage,
+			populate: {
+				path: 'author',
+				//make sure not to include the password hash!
+				select: 'name id'
+			}
 		};
-		let frames = await Frame.paginate({'user.id': profile.id}, pageOpts);
+		let frames = await Frame.paginate({author: profile.id}, pageOpts);
 
 		res.render('userprofile', {user: req.user, profile: profile, frames: frames.docs});
 

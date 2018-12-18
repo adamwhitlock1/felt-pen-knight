@@ -6,13 +6,12 @@ const ObjectId = Schema.ObjectId;
 
 const FrameSchema = new Schema({
 	url: {type: String, required: true, max: 256},
+
 	created: {type: Date, default: Date.now},
-	user: {
-		id:{type: ObjectId, required: true, max: 100},
-		name: {type: String, required: true, max: 100},
-	},
-	parent: {type: ObjectId, required: false},
-	children: [{type: ObjectId}]
+	author: {type: ObjectId, required: true, ref: 'User'},
+
+	parents: [{type: ObjectId, required: true, ref: 'Frame'}],
+	children: [{type: ObjectId, ref: 'Frame'}]
 });
 
 FrameSchema.plugin(mongoosePaginate);

@@ -1,0 +1,26 @@
+extends layout.pug
+
+include mixins.pug
+
+block content
+	div.content
+		
+		if frame.parents
+			each parent in frame.parents
+				+renderFrame(parent)
+		
+		+renderFrame(frame)
+		hr
+		//-TODO: canvas painter
+		p Canvas integration coming soon!
+		
+		
+		form(method='post', action='/frames/' + frame.id + '/new', enctype='multipart/form-data')
+			input(type='file', name='image')
+			input(type='submit')
+			p Image must be 640x480 EXACTLY
+		
+			if frame.children
+				each child in frame.children
+					+renderFrame(child)
+		
