@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
+
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
@@ -13,5 +15,5 @@ const FrameSchema = new Schema({
 	children: [{type: ObjectId}]
 });
 
-
+FrameSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('Frame', FrameSchema);
