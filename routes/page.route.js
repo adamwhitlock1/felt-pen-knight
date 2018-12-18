@@ -29,10 +29,12 @@ router.get('/', async function(req, res, next) {
 		let recentFrames = await Frame.find()
 			.sort({created: -1})
 			.limit(settings.postsPerPage)
+			.populate('author', 'name id')
 			.exec();
 
 		let startFrame = await Frame.findOne()
 			.sort({created: 1})
+			.populate('author', 'name id')
 			.exec();
 
 		return res.render('index', {
