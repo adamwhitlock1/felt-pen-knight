@@ -9,7 +9,7 @@ exports.getFrame = async function(req, res, next) {
 	}
 
 	try {
-		
+
 		const subpop = {
 			path: 'parents children',
 			select: 'author id url created',
@@ -69,7 +69,7 @@ exports.postFrame = async function(req, res, next) {
 			return next('parent does not exist!');
 		}
 
-		const maxParents = 10;
+		const maxParents = 5;
 		let parents = parent.parents;
 		parents.push(parentId);
 		if(parents.length > maxParents) {
