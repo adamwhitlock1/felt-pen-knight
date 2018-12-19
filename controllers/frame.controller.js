@@ -88,8 +88,7 @@ exports.postFrame = async function(req, res, next) {
 		parent.update({
 			$push: {children: save.id}
 		}, (err) =>{
-			console.log(err);
-			console.log("hiya!");
+			return next(err);
 		});
 
 		await image.mv('./static/images/' + url);
