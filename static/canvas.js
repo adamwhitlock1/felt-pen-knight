@@ -58,7 +58,7 @@ form.onsubmit = function (event) {
 				console.log(event);
 				window.location = req.responseURL;
 			} else {
-				alert('failed to upload.');
+				window.alert('failed to upload.');
 			}
 		}
 

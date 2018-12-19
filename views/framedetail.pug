@@ -16,8 +16,8 @@ block content
 	div.content.box
 		if user
 			canvas(id='canvas', width='640px', height='480px')
+			button(onclick='clearCanvas()') CLEAR
 			form(id='frame__form' method='post', action='/frames/' + frame.id + '/new', enctype='multipart/form-data')
-				button(onclick='clearCanvas()') CLEAR
 				input(type='submit', value='Post!')
 				input(id='image_input', type='hidden', name='image')
 			script(src='/static/canvas.js', type='text/javascript')

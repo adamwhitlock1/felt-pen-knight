@@ -24,7 +24,7 @@ router.get('/', async function(req, res, next) {
 	try {
 		let recentFrames = await Frame.find()
 			.sort({created: -1})
-			.limit(settings.postsPerPage)
+			.limit(20)
 			.populate('author', 'name id')
 			.exec();
 
