@@ -107,3 +107,9 @@ img.frame__preview__image{
 	width: 160px;
 	height: auto;
 }
+
+/* Canvas EDITOR */
+
+canvas{
+	border: 1px solid black;
+}

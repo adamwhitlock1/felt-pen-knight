@@ -7,18 +7,32 @@ block content
 		div.content.box
 			each parent in frame.parents
 				+renderFrame(parent)
+				
 	div.content.box
 		a(id='current')
 			+renderFrame(frame)
 
 	
 	div.content.box
-		//-TODO: canvas painter
-		p Canvas integration coming soon!
-		form(method='post', action='/frames/' + frame.id + '/new', enctype='multipart/form-data')
-			input(type='file', name='image')
-			input(type='submit')
-			p Image must be 640x480 EXACTLY
+		if user
+			canvas(id='canvas', width='640px', height='480px')
+			form(id='frame__form' method='post', action='/frames/' + frame.id + '/new', enctype='multipart/form-data')
+				button(onclick='clearCanvas()') CLEAR
+				input(type='submit', value='Post!')
+				input(id='image_input', type='hidden', name='image')
+			script(src='/static/canvas.js', type='text/javascript')
+			
+			br
+			p.center -- OR --
+			p.center upload an existing image
+			br
+			
+			form(id='frame__form' method='post', action='/frames/' + frame.id + '/new', enctype='multipart/form-data')
+				input(type='file', name='image')
+				input(type='submit' value='Post!')
+				p Image must be 640x480 EXACTLY
+		else
+				p You must log in to post.
 		
 	div.content.box
 		h1 Children:
