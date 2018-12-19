@@ -11,6 +11,7 @@ const userRoutes = require('./routes/user.route');
 const frameRoutes = require('./routes/frame.route');
 const otherRoutes = require('./routes/other.route');
 const pageRoutes = require('./routes/page.route');
+const errorHandler = require('./error');
 const app = express();
 
 
@@ -37,6 +38,7 @@ app.use('/users', userRoutes);
 app.use('/frames', frameRoutes);
 app.use('/static', otherRoutes);
 app.use(pageRoutes);
+app.use(errorHandler);
 
 
 passport.use(new LocalStrategy({

@@ -1,0 +1,10 @@
+extends layout.pug
+
+block content
+	div.content.box.error
+		if status
+			h1 #{err.status}
+		if message
+			p #{message}
+		else 
+			p Something has gone terribly wrong!
