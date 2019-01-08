@@ -29,7 +29,7 @@ app.set('view engine', 'pug');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(fileUpload());
-app.use(session({secret: 'draw more'}));
+app.use(session({secret: process.env.SESSIONSECRET}));
 app.use(passport.initialize());
 app.use(passport.session());
 
