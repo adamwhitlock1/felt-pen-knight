@@ -10,24 +10,28 @@ exports.getFrame = async function(req, res, next) {
 
 	try {
 
+
 		const subpop = {
-			path: 'parents children',
+			path: '',
 			select: 'author id url created',
 			populate: {
 				path: 'author',
 				select: 'name id'
 			}
 		};
+		if(req.query.children){
+			subpop.path += 'children '
+		}
+		if(req.query.parents){
+			subpop.path += 'parents '
+		}
 
 		let frame = await Frame.findById(frameId)
 			.populate('author', 'name id')
 			.populate(subpop)
 			.exec();
 
-		res.render('framedetail', {
-			user: req.user,
-			frame: frame,
-		});
+		res.send(frame);
 
 	} catch (e) {
 		return next(e);

@@ -5,10 +5,6 @@ const Frame = require('../models/frame.model');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 
-exports.test = function(req, res) {
-	res.send('Greetings from the test controller!');
-};
-
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
@@ -63,8 +59,8 @@ exports.register = async function(req, res, next) {
 
 		await transporter.sendMail(mail);
 
-		//all is well if we make it here, redirect to login page so they can log in.
-		return res.redirect('/login');
+		//good job
+		return res.sendResponse(200);
 
 
 	} catch (e) {
@@ -74,10 +70,49 @@ exports.register = async function(req, res, next) {
 
 };
 
+/**
+ * Bans a user, preventing them from further posting / logging in
+ */
+exports.ban = async function(req, res, next) {
+	//only admins can ban
+	if(!req.isAuthenticated() || !req.user.admin) {
+		return next('Unauthorized');
+	}
+
+	//check that the user exists
+	if(!req.params.id) {
+		return next('Invalid user id');
+	}
+
+	let reason = req.body.reason || 'No reason given.';
+
+	try {
+		let user = await User.findById(req.params.id).exec();
+		user.banned = true;
+
+		const mail = {
+			from: process.env.GMAIL_USER,
+			to: user.email,
+			subject: 'You have been banned from the Art Tree',
+			html: `<p>You have been banned for the following reason:</p>
+				<p> ${reason} </p>`
+		};
+		await user.save();
+
+		await transporter.sendMail(mail);
+
+		res.sendStatus(200);
+
+	} catch (e) {
+		return next(e);
+	}
+
+};
+
 /*
  * Displays a users profile.
  */
-exports.details = async function(req, res, next) {
+exports.profile = async function(req, res, next) {
 
 	if(!req.params.id){
 		next('need a valid user id!');
@@ -86,7 +121,7 @@ exports.details = async function(req, res, next) {
 	try {
 
 		//get the user info
-		let profile = await User.findById(req.params.id).exec();
+		let profile = await User.findById(req.params.id, {password: 0}).exec();
 
 		//pagination options
 		let page = req.params.page;
@@ -107,7 +142,7 @@ exports.details = async function(req, res, next) {
 		};
 		let frames = await Frame.paginate({author: profile.id}, pageOpts);
 
-		res.render('userprofile', {user: req.user, profile: profile, frames: frames.docs});
+		return res.send({user: req.user, profile: profile, frames: frames.docs});
 
 	} catch (e) {
 		next(e);
