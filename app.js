@@ -1,6 +1,5 @@
 //server setup
 const express = require('express');
-const cors = require('cors');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const passport = require('passport');
@@ -11,6 +10,7 @@ const User = require('./models/user.model.js');
 const userRoutes = require('./routes/user.route');
 const frameRoutes = require('./routes/frame.route');
 const otherRoutes = require('./routes/other.route');
+const pageRoutes = require('./routes/page.route');
 const errorHandler = require('./error');
 const app = express();
 
@@ -24,20 +24,23 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 
 //middleware
-app.use(cors());
+app.set('view engine', 'pug');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(fileUpload());
 app.use(session({secret: process.env.SESSIONSECRET}));
 app.use(passport.initialize());
 app.use(passport.session());
+
+
 app.use('/users', userRoutes);
 app.use('/frames', frameRoutes);
 app.use('/static', otherRoutes);
+app.use(pageRoutes);
 app.use(errorHandler);
 
 
-//Configure passport
 passport.use(new LocalStrategy({
 	usernameField: 'name',
 	passwordField: 'password',
@@ -72,7 +75,7 @@ app.post('/login', passport.authenticate('local', {
 })
 );
 
-let port = 8888;
+let port = 8080;
 app.listen(port, () => {
 	console.log(`Running server on port ${port}`);
 });

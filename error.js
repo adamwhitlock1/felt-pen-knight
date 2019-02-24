@@ -1,3 +1,7 @@
 module.exports = function(err, req, res, next){
-	res.send(err);
+	console.log(err);
+	res.render('error', {
+		user: req.user,
+		message: err,
+	});
 };
